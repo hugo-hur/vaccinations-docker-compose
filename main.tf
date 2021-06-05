@@ -1,6 +1,12 @@
+
+
+
+
+
+
 resource "aws_ecs_task_definition" "service" {
   family                = "service"
-  container_definitions = file("service.json")
+  container_definitions = file("definitions.json")
 }
 
 resource "aws_ecs_cluster" "vaccination_cluster" {
@@ -15,8 +21,8 @@ resource "aws_ecs_cluster" "vaccination_cluster" {
 resource "aws_ecs_service" "postgraphile_service" {
   name            = "postgraphile_service"
   cluster         = aws_ecs_cluster.vaccination_cluster.id
-  task_definition = aws_ecs_task_definition.mongo.arn
-  desired_count   = 3
+  task_definition = aws_ecs_task_definition.service.arn
+  desired_count   = 1
   iam_role        = aws_iam_role.foo.arn
   depends_on      = [aws_iam_role_policy.foo]
 
