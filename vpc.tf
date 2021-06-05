@@ -56,15 +56,15 @@ resource "aws_security_group" "ecs_sg" {
     }
 }
 
-resource "aws_security_group" "rds_sg" {
+resource "aws_security_group" "rds_sg" {//Allow just our cluster to access the rds
     vpc_id      = aws_vpc.vpc.id
 
     ingress {
         protocol        = "tcp"
-        from_port       = 3306
-        to_port         = 3306
+        from_port       = 5432//Allow inbound from outside network
+        to_port         = 5432
         cidr_blocks     = ["0.0.0.0/0"]
-        security_groups = [aws_security_group.ecs_sg.id]
+        security_groups = [aws_security_group.ecs_sg.id]//Allow inbound from the cluster
     }
 
     egress {
