@@ -1,0 +1,38 @@
+version: "3.3"
+services:
+  db:
+    container_name: postgraphile-vaccinations
+    restart: always
+    image: vaccinations-db
+    build:
+      context: ./db
+    volumes:
+      - db:/var/lib/postgresql/data
+    env_file:
+      - ./.env
+    networks:
+      - network
+    ports:
+      - 5432:5432
+
+  graphql:
+    container_name: vaccine-graphql
+    restart: always
+    image: vaccine-graphql
+    build:
+      context: ./graphql
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+    networks:
+      - network
+    ports:
+      - 5433:5433
+    command: "--connection ${DATABASE_URL} --port 5433 --schema ${SCHEMA} --append-plugins /usr/postgraphile/node_modules/@graphile-contrib/pg-simplify-inflector,/usr/postgraphile/filters/arrivedEarlierThan.js,/usr/postgraphile/filters/arrivedLaterThan.js,/usr/postgraphile/filters/expiresEarlierThan.js,/usr/postgraphile/filters/expiresLaterThan.js"
+
+networks:
+  network:
+
+volumes:
+  db:
