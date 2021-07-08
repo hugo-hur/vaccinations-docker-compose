@@ -1,9 +1,9 @@
 version: "3.3"
 services:
   db:
-    container_name: postgraphile-vaccinations
+    container_name: vaccinations-postgres
     restart: always
-    image: vaccinations-db
+    image: vaccinations-database   
     build:
       context: ./db
     volumes:
