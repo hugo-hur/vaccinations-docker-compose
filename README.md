@@ -1,2 +1,2 @@
-# vaccinations-terraform-aws
-Using terraform to deploy postgraphile and single page web app
+# vaccinations-docker-compose
+Using docker compose to deploy webapp with postgraphile server and database
