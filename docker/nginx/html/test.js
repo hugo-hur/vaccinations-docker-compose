@@ -38,7 +38,7 @@ function left(data){
       console.log("Order "  + order.id + " is completely used");
     }
     else if(!isFutureDate(order.expires)){
-      console.log("Order "  + order.id + " is expired");
+      //console.log("Order "  + order.id + " is expired");
       unused_exp += (injections - used_from);
     }
     else{
