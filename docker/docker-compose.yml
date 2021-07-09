@@ -28,8 +28,10 @@ services:
     networks:
       - network
     ports:
-      - 5433:5433
-    command: "--cors --connection ${DATABASE_URL} --port 5433 --schema ${SCHEMA} --append-plugins /usr/postgraphile/node_modules/@graphile-contrib/pg-simplify-inflector,/usr/postgraphile/filters/arrivedEarlierThan.js,/usr/postgraphile/filters/arrivedLaterThan.js,/usr/postgraphile/filters/expiresEarlierThan.js,/usr/postgraphile/filters/expiresLaterThan.js"
+      #- 5433:5433
+      - 5000:5000
+    #command: "--cors --connection ${DATABASE_URL} --port 5433 --schema ${SCHEMA} --append-plugins /usr/postgraphile/node_modules/@graphile-contrib/pg-simplify-inflector,/usr/postgraphile/filters/arrivedEarlierThan.js,/usr/postgraphile/filters/arrivedLaterThan.js,/usr/postgraphile/filters/expiresEarlierThan.js,/usr/postgraphile/filters/expiresLaterThan.js"
+    command: "--cors --connection ${DATABASE_URL} --port 5000 --schema ${SCHEMA} --append-plugins /usr/postgraphile/node_modules/@graphile-contrib/pg-simplify-inflector,/usr/postgraphile/filters/arrivedEarlierThan.js,/usr/postgraphile/filters/arrivedLaterThan.js,/usr/postgraphile/filters/expiresEarlierThan.js,/usr/postgraphile/filters/expiresLaterThan.js"
 
   nginx:
     container_name: vaccine-nginx
