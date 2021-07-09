@@ -1,3 +1,5 @@
+\connect vaccin vaccin_impl
+
 insert into orders (
  id
 ,order_number

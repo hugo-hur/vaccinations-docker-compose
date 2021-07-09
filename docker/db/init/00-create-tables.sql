@@ -3,6 +3,7 @@ create user vaccin_impl with encrypted password 'vaccin_impl';
 alter role vaccin_impl with createrole;
 grant all privileges on database vaccin to vaccin_impl;
 
+\connect vaccin vaccin_impl
 --
 -- vaccin_impl schema is the private implementation schema
 --
