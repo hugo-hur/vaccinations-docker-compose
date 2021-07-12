@@ -19,3 +19,10 @@ Stop the application with `docker-compose down`
 
 # Containers
 
+## db
+Found in the `db` folder, this container is running the postgresql database that postgraphile uses.
+During build the official postgresql 12 docker image is downloaded from docker repository and database initialization files are added to the image.
+For more information, see `db/Dockerfile` and [Postgres Docker Hub](https://hub.docker.com/_/postgres).
+
+## graphql
+Graphql is an REST alternative api. I'm using [PostGraphile](https://www.graphile.org/postgraphile/) to automatically create read-only query api from the postgresql database running in its own container. The best benefit from Graphql over rest api is that the requester defines what data is needed to be returned and linking between tables can also be achieved without sending multiple requests. However downsides do exists, most notably client can do very intensive queries.
