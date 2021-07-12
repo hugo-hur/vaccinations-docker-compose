@@ -1,7 +1,7 @@
 version: "3.3"
 services:
   db:
-    container_name: vaccinations-postgres
+    container_name: vaccine-postgres
     restart: always
     image: vaccinations-database   
     build:
