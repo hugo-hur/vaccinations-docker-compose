@@ -4,14 +4,17 @@ LABEL description="Instant high-performance GraphQL API for your PostgreSQL data
 # Install PostGraphile and PostGraphile plugins
 WORKDIR /usr/postgraphile
 
+#Install postgraphile
 RUN npm install -g postgraphile
-#RUN npm install -g postgraphile-plugin-connection-filter
-#RUN npm install -g @graphile-contrib/pg-simplify-inflector
+
+#Install pg-simplify-inflector plugin
 RUN npm install --save @graphile-contrib/pg-simplify-inflector
-#RUN npm install -g graphile-utils
+
+#Install graphile-utils package for custom filters
 RUN npm install --save graphile-utils
 
-ADD ./filters/ /usr/postgraphile/filters
+#Copy custom filter files to the poostgraphile directory
+COPY ./filters/ /usr/postgraphile/filters
 
 EXPOSE 5000
 ENTRYPOINT ["postgraphile", "-n", "0.0.0.0"]
