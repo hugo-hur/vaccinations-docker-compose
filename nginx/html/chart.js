@@ -15,6 +15,7 @@ const data = {
         backgroundColor: 'rgb(255, 99, 132)',
         borderColor: 'rgb(255, 99, 132)',
         data: [],//[0, 10, 5, 2, 20, 30, 45],
+
     }]
 };
 
@@ -26,7 +27,22 @@ const config = {
 
 //var myChart = new Chart(document.getElementById('myChart'), config);
 var expiryChart = new Chart(document.getElementById('expiryChart'), config);
-var arrivedChart = new Chart(document.getElementById('arrivedChart'), config);
+
+const data2 = {
+  labels: [],
+  datasets: [{
+      label: 'Arrivals dataset',
+      backgroundColor: 'rgb(255, 99, 132)',
+      borderColor: 'rgb(255, 99, 132)',
+      data: [],//[0, 10, 5, 2, 20, 30, 45],
+  }]
+};
+const config2 = {
+  type: 'line',
+  data2,
+  options: {}
+};
+var arrivedChart = new Chart(document.getElementById('arrivedChart'), config2);
 
 function addExpiryData(month, data) {
   label = month;
