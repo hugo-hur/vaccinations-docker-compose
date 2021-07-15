@@ -1,20 +1,20 @@
 
 // === include 'setup' then 'config' ===
 const labels = [
-    'January',
+    /*'January',
     'February',
     'March',
     'April',
     'May',
-    'June',
+    'June',*/
   ];
 const data = {
     labels: labels,
     datasets: [{
-        label: 'My First dataset',
+        label: 'Expiry dataset',
         backgroundColor: 'rgb(255, 99, 132)',
         borderColor: 'rgb(255, 99, 132)',
-        data: [0, 10, 5, 2, 20, 30, 45],
+        data: [],//[0, 10, 5, 2, 20, 30, 45],
     }]
 };
 
@@ -24,4 +24,14 @@ const config = {
     options: {}
   };
 
-var myChart = new Chart(document.getElementById('myChart'), config);
+//var myChart = new Chart(document.getElementById('myChart'), config);
+var expiryChart = new Chart(document.getElementById('expiryChart'), config);
+
+function addExpiryData(month, data) {
+  label = month;
+  expiryChart.data.labels.push(label);
+  expiryChart.data.datasets.forEach((dataset) => {
+      dataset.data.push(data);
+  });
+  expiryChart.update();
+}
