@@ -114,17 +114,22 @@ function addMonth(date){
 
 async function printExpired(data){
   var time1 = new Date('2021-01-01T00:00:00+02:00');//Jan
-  var expiries = [];
+  
   for(i = 0; i< 12; i++){
     time2 = addMonth(time1);
     console.log(time1.toISOString() + "  -  " + time2.toISOString())
     var json = await queryExpired(time2.toISOString(), time1.toISOString());
-    console.log(json.data.orders.totalCount);
-    expiries.push(json.data.orders.totalCount)
+    var data = json.data.orders.nodes;
+
+    var expired = 0;
+    data.forEach((order) => {
+      expired += order.injections - order.vaccinationsByOrdersId.totalCount;//If we have not used all injections, we have expired ones
+    });
+
+    
+    addExpiryData(time1.toLocaleString('default', { month: 'long' }), expired);
     time1 = time2;
-    addExpiryData((i+1).toString(), json.data.orders.totalCount);
   }
-  console.log(expiries);
   
 
 }
@@ -138,7 +143,7 @@ function queryExpired(start, end){
       }
     )
     {
-      totalCount
+      #totalCount
       nodes{
         vaccine
         injections
