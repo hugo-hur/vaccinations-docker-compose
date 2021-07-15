@@ -287,10 +287,3 @@ var q = `query MyQuery {
     }
   }
 }`
-//query(q2);
-//query(sumquery);
-
-//querySum();
-//vaccinationsLeftQuery();
-printExpired();
-printArrivals();
