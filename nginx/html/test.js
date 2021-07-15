@@ -166,10 +166,73 @@ function queryExpired(start, end){
     body: JSON.stringify({query: queryex})
     })
     .then(r => r.json())
-    //.then(data => printExpired(data));
-   // .then(data => console.log(data.vaccinations));
+}
 
+/*{
+  orders(
+    condition: {
+      arrivedEarlierThan: "2021-02-20 00:00:00+02:00" 
+      arrivedLaterThan: "2021-02-15 00:00:00+02:00"
+    }
+  )
+	{
+    totalCount
+    nodes{
+      vaccine
+      injections
+      healthCareDistrict
+      arrived
+    }
+  }
+} */
+async function printArrivals(){
+  var time1 = new Date('2021-01-01T00:00:00+02:00');//Jan
+  
+  for(i = 0; i< 12; i++){
+    time2 = addMonth(time1);
+    //console.log(time1.toISOString() + "  -  " + time2.toISOString())
+    var json = await queryArrivals(time1.toISOString(), time2.toISOString());
+    var data = json.data.orders.nodes;
+    var injections = 0;
+    data.forEach((order) => {
+      injections += order.injections;
+    });
 
+    addArrivalData(time1.toLocaleString('default', { month: 'long' }), injections);
+    time1 = time2;
+  }
+}
+function queryArrivals(start, end){
+  var queryex = `query MyQuery {
+    orders(
+      condition: {
+        arrivedEarlierThan: "%end%" 
+        arrivedLaterThan: "%start%"
+      }
+    )
+    {
+      totalCount
+      nodes{
+        vaccine
+        injections
+        healthCareDistrict
+        arrived
+      }
+    }
+  }`
+  queryex = queryex.replace("%start%", start);
+  queryex = queryex.replace("%end%", end);
+  //console.log(queryex);
+
+  return fetch('http://localhost:5000/graphql', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+    },
+    body: JSON.stringify({query: queryex})
+    })
+    .then(r => r.json())
 }
 
  var q2  = `query MyQuery {
@@ -210,8 +273,8 @@ var sumquery = `query SumQuery {
 var q = `query MyQuery {
   orders(
     condition: {
-      expiresEarlierThan: "2021-02-03 00:00:00+02:00" 
-      
+      arrivedEarlierThan: "2021-03-03 00:00:00+02:00" 
+      arrivedLaterThan: "2021-02-03 00:00:00+02:00"
     }
   )
 	{
@@ -219,9 +282,8 @@ var q = `query MyQuery {
     nodes{
       vaccine
       injections
-      vaccinationsByOrdersId {
-        totalCount
-      }
+      healthCareDistrict
+      
     }
   }
 }`
@@ -231,3 +293,4 @@ var q = `query MyQuery {
 //querySum();
 //vaccinationsLeftQuery();
 printExpired();
+printArrivals();
