@@ -118,7 +118,7 @@ async function printExpired(data){
   for(i = 0; i< 12; i++){
     time2 = addMonth(time1);
     console.log(time1.toISOString() + "  -  " + time2.toISOString())
-    var json = await queryExpired(time1.toISOString(), time2.toISOString());
+    var json = await queryExpired(time2.toISOString(), time1.toISOString());
     console.log(json.data.orders.totalCount);
     expiries.push(json.data.orders.totalCount)
     time1 = time2;
