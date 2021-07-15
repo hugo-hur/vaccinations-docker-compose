@@ -26,6 +26,7 @@ const config = {
 
 //var myChart = new Chart(document.getElementById('myChart'), config);
 var expiryChart = new Chart(document.getElementById('expiryChart'), config);
+var arrivedChart = new Chart(document.getElementById('arrivedChart'), config);
 
 function addExpiryData(month, data) {
   label = month;
@@ -34,4 +35,12 @@ function addExpiryData(month, data) {
       dataset.data.push(data);
   });
   expiryChart.update();
+}
+function addArrivalData(month, data) {
+  label = month;
+  arrivedChart.data.labels.push(label);
+  arrivedChart.data.datasets.forEach((dataset) => {
+      dataset.data.push(data);
+  });
+  arrivedChart.update();
 }
