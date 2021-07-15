@@ -9,7 +9,7 @@ const labels = [
     'June',*/
   ];
 const data = {
-    labels: labels,
+    labels: [],
     datasets: [{
         label: 'Expiry dataset',
         backgroundColor: 'rgb(255, 99, 132)',
@@ -21,28 +21,46 @@ const data = {
 
 const config = {
     type: 'line',
-    data,
+    data: {
+      labels: [],
+      datasets: [{
+          label: 'Expiry dataset',
+          backgroundColor: 'rgb(255, 99, 132)',
+          borderColor: 'rgb(255, 99, 132)',
+          data: [],//[0, 10, 5, 2, 20, 30, 45],
+  
+      }]
+    },
     options: {}
   };
 
-//var myChart = new Chart(document.getElementById('myChart'), config);
-var expiryChart = new Chart(document.getElementById('expiryChart'), config);
+var expiryChart = null;
+var arrivedChart = null;
 
-const data2 = {
-  labels: [],
-  datasets: [{
-      label: 'Arrivals dataset',
-      backgroundColor: 'rgb(255, 99, 132)',
-      borderColor: 'rgb(255, 99, 132)',
-      data: [],//[0, 10, 5, 2, 20, 30, 45],
-  }]
-};
-const config2 = {
-  type: 'line',
-  data2,
-  options: {}
-};
-var arrivedChart = new Chart(document.getElementById('arrivedChart'), config2);
+async function printAll(){
+  await printExpired();
+  await printArrivals();
+}
+window.onload = function () {
+  expiryChart = new Chart(document.getElementById('expiryChart'), config);
+  arrivedChart = new Chart(document.getElementById('arrivedChart'), {
+    type: 'line',
+    data: {
+      labels: [],
+      datasets: [{
+          label: 'Arrival dataset',
+          backgroundColor: 'rgb(255, 99, 132)',
+          borderColor: 'rgb(255, 99, 132)',
+          data: [],//[0, 10, 5, 2, 20, 30, 45],
+  
+      }]
+    },
+    options: {}
+  });
+  printAll();
+  
+}
+
 
 function addExpiryData(month, data) {
   label = month;
