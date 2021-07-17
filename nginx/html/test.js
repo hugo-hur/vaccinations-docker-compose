@@ -1,17 +1,47 @@
-/*vaccinations {
-    nodes {
-      gender
-      id
-      vaccinationDate
-      orders {
-        injections
-        arrived
-        expires
-      }
+/*
+For given day like 2021-04-12T11:10:06
+
+How many orders and vaccines have arrived total?
+How many of the vaccinations have been used?
+How many bottles have expired on the given day (remember a bottle expires 30 days after arrival)
+How many vaccines expired before the usage -> remember to decrease used injections from the expired bottle
+How many vaccines are left to use?
+How many vaccines are going to expire in the next 10 days?
+Perhaps there is some other data which could tell us some interesting things?
+*/
+/*
+How many orders/vaccines per producer?
+
+{
+  orders(
+    condition: {
+      #arrivedEarlierThan: "2021-02-20 00:00:00+02:00" 
+      #arrivedLaterThan: "2021-02-15 00:00:00+02:00"
+      vaccine: "Antiqua"
+    }
+  )
+	{
+    totalCount
+    nodes{
+      #vaccine
+      injections
+      healthCareDistrict
+      arrived
     }
   }
+}
 */
 
+function queryServer(queryex){
+  return fetch('http://localhost:5000/graphql', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+    },
+    body: JSON.stringify({query: queryex})
+    })
+    .then(r => r.json())
 }
 
 function left(data){
@@ -80,13 +110,20 @@ function addMonth(date){
   time2 = new Date(time2.setMonth(time2.getMonth()+1));
   return time2;
 }
+/*function addDay(date, days){
+  time2 = new Date(date.getTime());
+  time2 = new Date(time2.setDay(time2.getDay()+days));
+  return time2;
+}*/
 
-async function printExpired(data){
-  var time1 = new Date('2021-01-01T00:00:00+02:00');//Jan
-  
-  for(i = 0; i< 12; i++){
-    time2 = addMonth(time1);
-    console.log(time1.toISOString() + "  -  " + time2.toISOString())
+
+async function printExpired(startdate, numdays){
+  var time1 = startdate;//new Date('2020-09-01T00:00:00+02:00');//Jan
+  clearExpiryData();
+
+  for(i = 0; i < numdays; i++){
+    time2 = time1.addDays(1);
+    //console.log(time1.toISOString() + "  -  " + time2.toISOString())
     var json = await queryExpired(time2.toISOString(), time1.toISOString());
     var data = json.data.orders.nodes;
 
@@ -96,7 +133,8 @@ async function printExpired(data){
     });
 
     
-    addExpiryData(time1.toLocaleString('default', { month: 'long' }), expired);
+    //addExpiryData(time1.toLocaleString('default', { month: 'long' }), expired); //{ timeZone: 'UTC' }
+    addExpiryData(time1.toLocaleString('default', { timeZone: 'Europe/Helsinki' }), expired);
     time1 = time2;
   }
   
@@ -126,39 +164,14 @@ function queryExpired(start, end){
   queryex = queryex.replace("%later%", end);
   //console.log(queryex);
 
-  return fetch('http://localhost:5000/graphql', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-    },
-    body: JSON.stringify({query: queryex})
-    })
-    .then(r => r.json())
+  return queryServer(queryex);
 }
 
-/*{
-  orders(
-    condition: {
-      arrivedEarlierThan: "2021-02-20 00:00:00+02:00" 
-      arrivedLaterThan: "2021-02-15 00:00:00+02:00"
-    }
-  )
-	{
-    totalCount
-    nodes{
-      vaccine
-      injections
-      healthCareDistrict
-      arrived
-    }
-  }
-} */
-async function printArrivals(){
-  var time1 = new Date('2021-01-01T00:00:00+02:00');//Jan
-  
-  for(i = 0; i< 12; i++){
-    time2 = addMonth(time1);
+async function printArrivals(startdate, numdays){
+  var time1 = startdate;//new Date('2020-09-01T00:00:00+02:00');//Jan
+  clearArrivalData();
+  for(i = 0; i < numdays; i++){
+    time2 = time1.addDays(1);
     //console.log(time1.toISOString() + "  -  " + time2.toISOString())
     var json = await queryArrivals(time1.toISOString(), time2.toISOString());
     var data = json.data.orders.nodes;
@@ -167,7 +180,8 @@ async function printArrivals(){
       injections += order.injections;
     });
 
-    addArrivalData(time1.toLocaleString('default', { month: 'long' }), injections);
+    //addArrivalData(time1.toLocaleString('default', { month: 'long' }), injections);
+    addArrivalData(time1.toLocaleString('default', { timeZone: 'Europe/Helsinki' }), injections);
     time1 = time2;
   }
 }
@@ -193,32 +207,9 @@ function queryArrivals(start, end){
   queryex = queryex.replace("%end%", end);
   //console.log(queryex);
 
-  return fetch('http://localhost:5000/graphql', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-    },
-    body: JSON.stringify({query: queryex})
-    })
-    .then(r => r.json())
+  return queryServer(queryex);
 }
 
- var q2  = `query MyQuery {
-    vaccinations {
-      nodes {
-        gender
-        id
-        vaccinationDate
-        orders {
-          injections
-          arrived
-          expires
-          vaccine
-        }
-      }
-    }
-  }` 
 
 var sumquery = `query SumQuery {
 
