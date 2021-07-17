@@ -41,6 +41,11 @@ Date.prototype.addDays = function(days) {
   date.setDate(date.getDate() + days);
   return date;
 }
+Date.prototype.addHours = function(hours) {
+  var date = new Date(this.valueOf());
+  date.setHours(date.getHours() + hours);
+  return date;
+}
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -55,7 +60,28 @@ async function printAll(){
   }
 
 }
+async function updateStartdate(){
+  var year = parseInt(document.getElementById("startyear").value);
+  var month = parseInt(document.getElementById("startmonth").value);
+  var day = parseInt(document.getElementById("startday").value);
+
+  console.log(day);
+  console.log(month);
+  console.log(year);
+  
+  
+  var d = new Date(year, month-1, day, 0, 0, 0, 0);
+  
+  console.log(d);
+  //d = new Date(e.target.value);
+  //d.setHours(d.getHours() - 2);
+  printExpired(d, 50);
+  await printArrivals(d, 50);
+  //console.log(new Date(e.target.value).toLocaleString('default', { timeZone: 'Europe/Helsinki' }))
+}
+
 window.onload = function () {
+  //document.getElementById("startdate").addEventListener('input', updateValue);
   //expiryChart = new Chart(document.getElementById('expiryChart'), config);
   expiryChart = new Chart(document.getElementById('expiryChart'), {
     type: 'line',
@@ -85,7 +111,7 @@ window.onload = function () {
     },
     options: {}
   });
-  printAll();
+  //printAll();
   
 }
 
