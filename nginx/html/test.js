@@ -11,10 +11,7 @@
     }
   }
 */
-function isFutureDate(value) {
-  d_now = new Date();
-  d_inp = new Date(value)
-  return d_now.getTime() <= d_inp.getTime();
+
 }
 
 function left(data){
@@ -50,34 +47,6 @@ function left(data){
 
   header.innerHTML = "Käytetyt: " + used + " Saapuneet: " + arrived + " Voimassaolevat käyttämättömät: " + unused_not_exp + " Käyttämättömät vanhentuneet: " + unused_exp;
 }
-function vaccinationsLeftQuery(){
-  var q  = `query usageQuery {
-    orders {
-      nodes {
-        id
-        expires
-        healthCareDistrict
-        injections
-        vaccinationsByOrdersId {
-          totalCount
-        }
-        vaccine
-      }
-    }
-  }` 
-  fetch('http://localhost:5000/graphql', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-    },
-    body: JSON.stringify({query: q})
-    })
-    .then(r => r.json())
-    .then(data => left(data));
-
-}
-
 
 
 
