@@ -31,6 +31,50 @@ How many orders/vaccines per producer?
   }
 }
 */
+async function vaccinesPerProducer(producer){
+  var json = await vaccinesPerProducerQuery(producer, start=null, end=null);
+  console.log(json.data.orders.totalCount);
+  console.log(json.data.orders.nodes);
+  var vaccines = 0;
+  json.data.orders.nodes.forEach((node) => {
+    vaccines += node.injections;
+  });
+  console.log(vaccines);
+}
+function vaccinesPerProducerQuery(producer, start=null, end=null){
+  var queryex = `query MyQuery {
+    orders(
+      condition: {
+        %end%
+        %start%
+        vaccine: "%producer%"
+      }
+    )
+    {
+      totalCount
+      nodes{
+        injections
+      }
+    }
+  }`
+  if(start != null){
+    queryex = queryex.replace("%start%", "arrivedLaterThan: " + start);
+  }
+  else{
+    queryex = queryex.replace("%start%", "");
+  }
+  if(end != null){
+    queryex = queryex.replace("%end%", "arrivedEarlierThan: " + end);
+  }
+  else{
+    queryex = queryex.replace("%end%", "");
+  }
+
+  queryex = queryex.replace("%producer%", producer);
+  //console.log(queryex);
+
+  return queryServer(queryex);
+}
 
 function queryServer(queryex){
   return fetch('http://localhost:5000/graphql', {
@@ -41,69 +85,9 @@ function queryServer(queryex){
     },
     body: JSON.stringify({query: queryex})
     })
-    .then(r => r.json())
+    .then(r => r.json());
 }
 
-function left(data){
-  data = data.data;
-  header = document.getElementById("total-left");
-  console.log(data.orders.nodes);
-  var used = 0;
-  var arrived = 0;
-  var exp = 0;
-  var unused_not_exp = 0;
-  var unused_exp = 0;
-  /*for(order in data.orders.nodes){
-    used  += order.injections;
-    arrived += order.vaccinationsByOrdersId.totalCount;
-  }*/
-  data.orders.nodes.forEach(function(order){
-    var injections = order.injections;
-    var used_from = order.vaccinationsByOrdersId.totalCount
-    if(injections === used_from){
-
-      console.log("Order "  + order.id + " is completely used");
-    }
-    else if(!isFutureDate(order.expires)){
-      //console.log("Order "  + order.id + " is expired");
-      unused_exp += (injections - used_from);
-    }
-    else{
-      unused_not_exp += (injections - used_from);
-    }
-    arrived  += injections;
-    used += used_from;
-  })
-
-  header.innerHTML = "Käytetyt: " + used + " Saapuneet: " + arrived + " Voimassaolevat käyttämättömät: " + unused_not_exp + " Käyttämättömät vanhentuneet: " + unused_exp;
-}
-
-
-
-function printData(data){
-  data = data.data;
-  //console.log(data)
-  //console.log("Vaccinations count: " + data.vaccinations.totalCount)
-  //console.log("Orders count: " + data.orders.totalCount)
-  document.getElementById("total-orders").innerHTML = "Orders count: " + data.orders.totalCount;
-  document.getElementById("total-vaccinations").innerHTML = "Vaccinations count: " + data.vaccinations.totalCount;
-
-}
-function querySum(){
-  fetch('http://localhost:5000/graphql', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-    },
-    body: JSON.stringify({query: sumquery})
-    })
-    .then(r => r.json())
-    .then(data => printData(data));
-   // .then(data => console.log(data.vaccinations));
-
-
-}
 
 function addMonth(date){
   time2 = new Date(date.getTime());
