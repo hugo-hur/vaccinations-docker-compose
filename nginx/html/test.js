@@ -230,20 +230,3 @@ var sumquery = `query SumQuery {
       #arrivedLaterThan: "2021-01-03 00:00:00+02:00"
       #healthCareDistrict: "TAYS"*/
 
-var q = `query MyQuery {
-  orders(
-    condition: {
-      arrivedEarlierThan: "2021-03-03 00:00:00+02:00" 
-      arrivedLaterThan: "2021-02-03 00:00:00+02:00"
-    }
-  )
-	{
-    totalCount
-    nodes{
-      vaccine
-      injections
-      healthCareDistrict
-      
-    }
-  }
-}`
