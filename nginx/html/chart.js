@@ -75,7 +75,7 @@ async function updateStartdate(){
   console.log(d);
   //d = new Date(e.target.value);
   //d.setHours(d.getHours() - 2);
-  printExpired(d, 50);
+  await printExpired(d, 50);
   await printArrivals(d, 50);
   //console.log(new Date(e.target.value).toLocaleString('default', { timeZone: 'Europe/Helsinki' }))
 }
@@ -92,7 +92,7 @@ window.onload = function () {
           backgroundColor: 'rgb(255, 99, 132)',
           borderColor: 'rgb(255, 99, 132)',
           data: [],//[0, 10, 5, 2, 20, 30, 45],
-  
+          fill: false
       }]
     },
     options: {}
@@ -100,21 +100,50 @@ window.onload = function () {
   arrivedChart = new Chart(document.getElementById('arrivedChart'), {
     type: 'line',
     data: {
-      labels: [],
+      //labels: [],
       datasets: [{
           label: 'Vaccinations arrived',
           backgroundColor: 'rgb(255, 99, 132)',
           borderColor: 'rgb(255, 99, 132)',
           data: [],//[0, 10, 5, 2, 20, 30, 45],
+          fill: false
+  
+      },
+      {
+        label: 'Vaccinations Antiqua arrived',
+        backgroundColor: 'black',
+        borderColor: 'black',
+        data: [],
+        fill: false
+
+      },
+      {
+        label: 'Vaccinations Solar Buddhica arrived',
+        backgroundColor: 'green',
+        borderColor: 'green',
+        data: [],
+        fill: false
+
+      },
+      {
+        label: 'Vaccinations Zerpfy arrived',
+        backgroundColor: 'brown',
+        borderColor: 'brown',
+        data: [],
+        fill: false
   
       }]
     },
-    options: {}
+    options: {
+      scales: {
+        xAxes: [{
+          type: 'time',
+        }]
+      }
+    }
   });
-  //printAll();
   
 }
-
 
 function addExpiryData(month, data) {
   label = month;
@@ -129,17 +158,26 @@ function clearExpiryData(){
   expiryChart.data.labels = [];
 }
 
-function addArrivalData(month, data) {
-  label = month;
-  arrivedChart.data.labels.push(label);
-  arrivedChart.data.datasets.forEach((dataset) => {
-      dataset.data.push(data);
-  });
+function addArrivalData(/*label,*/ date, index, amount) {
+  
+  //arrivedChart.data.labels.push(label);
+  //arrivedChart.data.datasets[0].data.push(antiqua + solarbuddhica + zerpfy);
+  arrivedChart.data.datasets[index].data.push({t:date,y:amount});
+  /*arrivedChart.data.datasets[2].data.push({x:date,y:solarbuddhica});
+  arrivedChart.data.datasets[3].data.push({x:date,y:zerpfy});*/
+  
+  //arrivedChart.update();
+}
+function updateArrivalChart(){
   arrivedChart.update();
 }
+
 function clearArrivalData(){
   arrivedChart.data.datasets[0].data = [];
-  arrivedChart.data.labels = [];
+  arrivedChart.data.datasets[1].data = [];
+  arrivedChart.data.datasets[2].data = [];
+  arrivedChart.data.datasets[3].data = [];
+  //arrivedChart.data.labels = [];
 }
 
 

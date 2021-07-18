@@ -160,12 +160,36 @@ async function printArrivals(startdate, numdays){
     var json = await queryArrivals(time1.toISOString(), time2.toISOString());
     var data = json.data.orders.nodes;
     var injections = 0;
+    var solarbuddhica = 0;
+    var zerpfy = 0;
+    var antiqua = 0;
     data.forEach((order) => {
-      injections += order.injections;
+      var arrdate = new Date(order.arrived);
+      if(order.vaccine == "Antiqua"){
+        antiqua += order.injections;
+        //addArrivalData(arrdate, 1, order.injections);
+      }
+      else if(order.vaccine == "SolarBuddhica"){
+        solarbuddhica += order.injections;
+        //addArrivalData(arrdate, 2, order.injections);
+      }
+      else if(order.vaccine == "Zerpfy"){
+        zerpfy += order.injections;
+        //addArrivalData(arrdate, 3, order.injections);
+      }
+      
     });
 
-    //addArrivalData(time1.toLocaleString('default', { month: 'long' }), injections);
-    addArrivalData(time1.toLocaleString('default', { timeZone: 'Europe/Helsinki' }), injections);
+    //function addArrivalData(month, antiqua, solarbuddhica, zerpfy)
+    //var datestring = time1.toLocaleString('default', { timeZone: 'Europe/Helsinki' });
+    //addArrivalData(datestring, antiqua, solarbuddhica, zerpfy);
+    //addArrivalData(, injections);
+
+    addArrivalData(time1, 1, antiqua);
+    addArrivalData(time1, 2, solarbuddhica);
+    addArrivalData(time1, 3, zerpfy);
+    addArrivalData(time1, 0, antiqua + solarbuddhica + zerpfy);
+    updateArrivalChart();
     time1 = time2;
   }
 }
