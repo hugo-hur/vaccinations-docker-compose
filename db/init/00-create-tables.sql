@@ -28,6 +28,7 @@ create table orders (
 );
 
 create index orders_index1 on orders (health_care_district);
+create index orders_index2 on orders (vaccine);
 
 create table vaccinations (
  id               uuid primary key
