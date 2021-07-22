@@ -31,6 +31,22 @@ How many orders/vaccines per producer?
   }
 }
 */
+
+/*
+
+{
+  vaccinations(condition: {vaccinationsLaterThan: "2021-02-15 00:00:00+02:00"}) {
+    totalCount
+    nodes {
+      orders {
+        healthCareDistrict
+        vaccine
+      }
+    }
+  }
+}
+
+*/
 async function vaccinesPerProducer(producer){
   var json = await vaccinesPerProducerQuery(producer, start=null, end=null);
   console.log(json.data.orders.totalCount);
