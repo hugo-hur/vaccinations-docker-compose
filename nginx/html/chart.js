@@ -1,41 +1,9 @@
 
-// === include 'setup' then 'config' ===
-const labels = [
-    /*'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',*/
-  ];
-const data = {
-    labels: [],
-    datasets: [{
-        label: 'Expiry dataset',
-        backgroundColor: 'rgb(255, 99, 132)',
-        borderColor: 'rgb(255, 99, 132)',
-        data: [],//[0, 10, 5, 2, 20, 30, 45],
-
-    }]
-};
-
-const config = {
-    type: 'line',
-    data: {
-      labels: [],
-      datasets: [{
-          label: 'Expiry dataset',
-          backgroundColor: 'rgb(255, 99, 132)',
-          borderColor: 'rgb(255, 99, 132)',
-          data: [],//[0, 10, 5, 2, 20, 30, 45],
-  
-      }]
-    },
-    options: {}
-  };
 
 var expiryChart = null;
 var arrivedChart = null;
+var perProducer = null;
+
 Date.prototype.addDays = function(days) {
   var date = new Date(this.valueOf());
   date.setDate(date.getDate() + days);
@@ -143,6 +111,47 @@ window.onload = function () {
       }
     }
   );
+  perProducer = createLineChart("vaccinationsPerProducer",[{
+    label: 'Vaccinations used',
+    backgroundColor: 'rgb(255, 99, 132)',
+    borderColor: 'rgb(255, 99, 132)',
+    data: [],//[0, 10, 5, 2, 20, 30, 45],
+    fill: false
+
+    },
+    {
+      label: 'Vaccinations Antiqua',
+      backgroundColor: 'black',
+      borderColor: 'black',
+      data: [],
+      fill: false
+
+    },
+    {
+      label: 'Vaccinations Solar Buddhica',
+      backgroundColor: 'green',
+      borderColor: 'green',
+      data: [],
+      fill: false
+
+    },
+    {
+      label: 'Vaccinations Zerpfy',
+      backgroundColor: 'brown',
+      borderColor: 'brown',
+      data: [],
+      fill: false
+
+    }
+  ],
+  options = {
+      scales: {
+        xAxes: [{
+          type: 'time',
+        }]
+      }
+  }
+  );
   
 }
 
@@ -161,13 +170,8 @@ function clearExpiryData(){
 
 function addArrivalData(/*label,*/ date, index, amount) {
   
-  //arrivedChart.data.labels.push(label);
-  //arrivedChart.data.datasets[0].data.push(antiqua + solarbuddhica + zerpfy);
   arrivedChart.data.datasets[index].data.push({t:date,y:amount});
-  /*arrivedChart.data.datasets[2].data.push({x:date,y:solarbuddhica});
-  arrivedChart.data.datasets[3].data.push({x:date,y:zerpfy});*/
   
-  //arrivedChart.update();
 }
 function updateArrivalChart(){
   arrivedChart.update();
@@ -182,3 +186,6 @@ function clearArrivalData(){
 }
 
 
+function addVaccinationsUsedData(date, index, amount){
+  perProducer.data.datasets[index].data.push({t:date,y:amount});
+}
