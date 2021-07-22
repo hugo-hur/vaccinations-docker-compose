@@ -80,68 +80,68 @@ async function updateStartdate(){
   //console.log(new Date(e.target.value).toLocaleString('default', { timeZone: 'Europe/Helsinki' }))
 }
 
-window.onload = function () {
-  //document.getElementById("startdate").addEventListener('input', updateValue);
-  //expiryChart = new Chart(document.getElementById('expiryChart'), config);
-  expiryChart = new Chart(document.getElementById('expiryChart'), {
+function createLineChart(elementId, datasets, options = {}){
+  return new Chart(document.getElementById(elementId), {
     type: 'line',
     data: {
       labels: [],
-      datasets: [{
-          label: 'Expired vaccines',
-          backgroundColor: 'rgb(255, 99, 132)',
-          borderColor: 'rgb(255, 99, 132)',
-          data: [],//[0, 10, 5, 2, 20, 30, 45],
-          fill: false
-      }]
+      datasets: datasets
     },
-    options: {}
+    options: options
   });
-  arrivedChart = new Chart(document.getElementById('arrivedChart'), {
-    type: 'line',
-    data: {
-      //labels: [],
-      datasets: [{
-          label: 'Vaccinations arrived',
-          backgroundColor: 'rgb(255, 99, 132)',
-          borderColor: 'rgb(255, 99, 132)',
-          data: [],//[0, 10, 5, 2, 20, 30, 45],
-          fill: false
-  
-      },
-      {
-        label: 'Vaccinations Antiqua arrived',
-        backgroundColor: 'black',
-        borderColor: 'black',
-        data: [],
-        fill: false
+}
 
-      },
-      {
-        label: 'Vaccinations Solar Buddhica arrived',
-        backgroundColor: 'green',
-        borderColor: 'green',
-        data: [],
-        fill: false
+window.onload = function () {
+  //document.getElementById("startdate").addEventListener('input', updateValue);
+  //expiryChart = new Chart(document.getElementById('expiryChart'), config);
+  expiryChart = createLineChart(expiryChart,[{
+      label: 'Expired vaccines',
+      backgroundColor: 'rgb(255, 99, 132)',
+      borderColor: 'rgb(255, 99, 132)',
+      data: [],//[0, 10, 5, 2, 20, 30, 45],
+      fill: false
+    }]
+  );
+  arrivedChart = createLineChart(arrivedChart, [{
+      label: 'Vaccinations arrived',
+      backgroundColor: 'rgb(255, 99, 132)',
+      borderColor: 'rgb(255, 99, 132)',
+      data: [],//[0, 10, 5, 2, 20, 30, 45],
+      fill: false
 
-      },
-      {
-        label: 'Vaccinations Zerpfy arrived',
-        backgroundColor: 'brown',
-        borderColor: 'brown',
-        data: [],
-        fill: false
-  
-      }]
     },
-    options: {
+    {
+      label: 'Vaccinations Antiqua arrived',
+      backgroundColor: 'black',
+      borderColor: 'black',
+      data: [],
+      fill: false
+
+    },
+    {
+      label: 'Vaccinations Solar Buddhica arrived',
+      backgroundColor: 'green',
+      borderColor: 'green',
+      data: [],
+      fill: false
+
+    },
+    {
+      label: 'Vaccinations Zerpfy arrived',
+      backgroundColor: 'brown',
+      borderColor: 'brown',
+      data: [],
+      fill: false
+
+    }],
+    options = {
       scales: {
         xAxes: [{
           type: 'time',
         }]
       }
     }
-  });
+  );
   
 }
 
