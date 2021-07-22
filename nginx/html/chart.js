@@ -81,6 +81,7 @@ async function updateStartdate(){
 }
 
 function createLineChart(elementId, datasets, options = {}){
+  
   return new Chart(document.getElementById(elementId), {
     type: 'line',
     data: {
@@ -94,7 +95,7 @@ function createLineChart(elementId, datasets, options = {}){
 window.onload = function () {
   //document.getElementById("startdate").addEventListener('input', updateValue);
   //expiryChart = new Chart(document.getElementById('expiryChart'), config);
-  expiryChart = createLineChart(expiryChart,[{
+  expiryChart = createLineChart("expiryChart",[{
       label: 'Expired vaccines',
       backgroundColor: 'rgb(255, 99, 132)',
       borderColor: 'rgb(255, 99, 132)',
@@ -102,7 +103,7 @@ window.onload = function () {
       fill: false
     }]
   );
-  arrivedChart = createLineChart(arrivedChart, [{
+  arrivedChart = createLineChart("arrivedChart", [{
       label: 'Vaccinations arrived',
       backgroundColor: 'rgb(255, 99, 132)',
       borderColor: 'rgb(255, 99, 132)',
