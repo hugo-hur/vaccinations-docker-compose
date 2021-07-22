@@ -153,10 +153,10 @@ async function printExpired(startdate, numdays){
     addExpiryData(time1, 2, solarbuddhica);
     addExpiryData(time1, 3, zerpfy);
     addExpiryData(time1, 0, antiqua + solarbuddhica + zerpfy);
-    updateExpiryChart();
+    
     time1 = time2;
   }
-  
+  updateExpiryChart();
 
 }
 
@@ -224,9 +224,10 @@ async function printArrivals(startdate, numdays){
     addArrivalData(time1, 2, solarbuddhica);
     addArrivalData(time1, 3, zerpfy);
     addArrivalData(time1, 0, antiqua + solarbuddhica + zerpfy);
-    updateArrivalChart();
+    
     time1 = time2;
   }
+  updateArrivalChart();
 }
 function queryArrivals(start, end){
   var queryex = `query MyQuery {
