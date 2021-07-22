@@ -41,11 +41,10 @@ async function updateStartdate(){
   var d = new Date(year, month-1, day, 0, 0, 0, 0);
   
   console.log(d);
-  //d = new Date(e.target.value);
-  //d.setHours(d.getHours() - 2);
+  
   await printExpired(d, 50);
   await printArrivals(d, 50);
-  //console.log(new Date(e.target.value).toLocaleString('default', { timeZone: 'Europe/Helsinki' }))
+  
 }
 
 function createLineChart(elementId, datasets, options = {}){
