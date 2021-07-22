@@ -64,12 +64,44 @@ window.onload = function () {
   //document.getElementById("startdate").addEventListener('input', updateValue);
   //expiryChart = new Chart(document.getElementById('expiryChart'), config);
   expiryChart = createLineChart("expiryChart",[{
-      label: 'Expired vaccines',
+      label: 'Vaccinations expired',
       backgroundColor: 'rgb(255, 99, 132)',
       borderColor: 'rgb(255, 99, 132)',
       data: [],//[0, 10, 5, 2, 20, 30, 45],
       fill: false
-    }]
+
+    },
+    {
+      label: 'Vaccinations Antiqua expired',
+      backgroundColor: 'black',
+      borderColor: 'black',
+      data: [],
+      fill: false
+
+    },
+    {
+      label: 'Vaccinations Solar Buddhica expired',
+      backgroundColor: 'green',
+      borderColor: 'green',
+      data: [],
+      fill: false
+
+    },
+    {
+      label: 'Vaccinations Zerpfy expired',
+      backgroundColor: 'brown',
+      borderColor: 'brown',
+      data: [],
+      fill: false
+
+    }],
+    options = {
+      scales: {
+        xAxes: [{
+          type: 'time',
+        }]
+      }
+    }
   );
   arrivedChart = createLineChart("arrivedChart", [{
       label: 'Vaccinations arrived',
@@ -155,17 +187,19 @@ window.onload = function () {
   
 }
 
-function addExpiryData(month, data) {
-  label = month;
-  expiryChart.data.labels.push(label);
-  expiryChart.data.datasets.forEach((dataset) => {
-      dataset.data.push(data);
-  });
+function addExpiryData(date, index, amount) {
+  expiryChart.data.datasets[index].data.push({t:date,y:amount});
+}
+function updateExpiryChart(){
   expiryChart.update();
 }
 function clearExpiryData(){
+  //expiryChart.data.datasets[0].data = [];
   expiryChart.data.datasets[0].data = [];
-  expiryChart.data.labels = [];
+  expiryChart.data.datasets[1].data = [];
+  expiryChart.data.datasets[2].data = [];
+  expiryChart.data.datasets[3].data = [];
+  
 }
 
 function addArrivalData(/*label,*/ date, index, amount) {
@@ -182,7 +216,7 @@ function clearArrivalData(){
   arrivedChart.data.datasets[1].data = [];
   arrivedChart.data.datasets[2].data = [];
   arrivedChart.data.datasets[3].data = [];
-  //arrivedChart.data.labels = [];
+  
 }
 
 

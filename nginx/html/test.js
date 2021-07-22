@@ -127,14 +127,33 @@ async function printExpired(startdate, numdays){
     var json = await queryExpired(time2.toISOString(), time1.toISOString());
     var data = json.data.orders.nodes;
 
-    var expired = 0;
+    var solarbuddhica = 0;
+    var zerpfy = 0;
+    var antiqua = 0;
     data.forEach((order) => {
-      expired += order.injections - order.vaccinationsByOrdersId.totalCount;//If we have not used all injections, we have expired ones
+      var expired = order.injections - order.vaccinationsByOrdersId.totalCount;//If we have not used all injections, we have expired ones
+      var arrdate = new Date(order.arrived);
+      if(order.vaccine == "Antiqua"){
+        antiqua += order.injections;
+        //addArrivalData(arrdate, 1, order.injections);
+      }
+      else if(order.vaccine == "SolarBuddhica"){
+        solarbuddhica += order.injections;
+        //addArrivalData(arrdate, 2, order.injections);
+      }
+      else if(order.vaccine == "Zerpfy"){
+        zerpfy += order.injections;
+        //addArrivalData(arrdate, 3, order.injections);
+      }
+      
     });
-
     
     //addExpiryData(time1.toLocaleString('default', { month: 'long' }), expired); //{ timeZone: 'UTC' }
-    addExpiryData(time1.toLocaleString('default', { timeZone: 'Europe/Helsinki' }), expired);
+    addExpiryData(time1, 1, antiqua);
+    addExpiryData(time1, 2, solarbuddhica);
+    addExpiryData(time1, 3, zerpfy);
+    addExpiryData(time1, 0, antiqua + solarbuddhica + zerpfy);
+    updateExpiryChart();
     time1 = time2;
   }
   
