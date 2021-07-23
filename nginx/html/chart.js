@@ -60,8 +60,7 @@ function createLineChart(elementId, datasets, options = {}){
 }
 
 window.onload = function () {
-  //document.getElementById("startdate").addEventListener('input', updateValue);
-  //expiryChart = new Chart(document.getElementById('expiryChart'), config);
+  
   expiryChart = createLineChart("expiryChart",[{
       label: 'Vaccinations expired',
       backgroundColor: 'rgb(255, 99, 132)',
@@ -142,7 +141,7 @@ window.onload = function () {
       }
     }
   );
-  perProducer = createLineChart("vaccinationsPerProducer",[{
+  /*perProducer = createLineChart("vaccinationsPerProducer",[{
     label: 'Vaccinations used',
     backgroundColor: 'rgb(255, 99, 132)',
     borderColor: 'rgb(255, 99, 132)',
@@ -182,7 +181,7 @@ window.onload = function () {
         }]
       }
   }
-  );
+  );*/
   
 }
 
@@ -193,7 +192,6 @@ function updateExpiryChart(){
   expiryChart.update();
 }
 function clearExpiryData(){
-  //expiryChart.data.datasets[0].data = [];
   expiryChart.data.datasets[0].data = [];
   expiryChart.data.datasets[1].data = [];
   expiryChart.data.datasets[2].data = [];
@@ -201,10 +199,8 @@ function clearExpiryData(){
   
 }
 
-function addArrivalData(/*label,*/ date, index, amount) {
-  
+function addArrivalData(date, index, amount) {//Simply add data to the arrival chart
   arrivedChart.data.datasets[index].data.push({t:date,y:amount});
-  
 }
 function updateArrivalChart(){
   arrivedChart.update();
