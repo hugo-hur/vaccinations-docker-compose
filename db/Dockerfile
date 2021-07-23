@@ -1,3 +1,3 @@
 FROM postgres:12.0-alpine
 COPY ./init/ /docker-entrypoint-initdb.d/
-ADD ./datafiles/ /usr/postgraphile/datafiles
+COPY ./datafiles/ /usr/postgraphile/datafiles
