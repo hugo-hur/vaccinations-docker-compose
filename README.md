@@ -17,7 +17,7 @@ This builds the three required Docker images one for each
 Run the application with `docker-compose up -d`.
 This instantiates docker containers from the images built with the last command and starts them.
 
-Webpage will then be available at ()[http://localhost:8080].
+Webpage will then be available at [](http://localhost:8080).
 Set the start date at the top and press update to update the graphs. Graphs show the data for next 50 days from the start date.
 
 Stop the application with `docker-compose down`
