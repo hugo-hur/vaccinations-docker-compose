@@ -1,5 +1,5 @@
 \connect vaccin vaccin_impl
-
+-- insert data from json tables to the "real" tables
 insert into orders (
  id
 ,order_number
